@@ -10,7 +10,7 @@ import {
   setDoc,
   Timestamp,
 } from 'firebase/firestore';
-import { randomUUID } from 'crypto';
+import * as cryptoServer from 'crypto';
 
 import { db } from '@/lib/api';
 
@@ -20,6 +20,13 @@ import {
   Snapshot,
   TransformDocumentResult,
 } from '@/lib/types/db';
+
+export function getRandomUUID() {
+  if (typeof window === 'undefined') {
+    return cryptoServer.randomBytes(16).toString('hex');
+  }
+  return crypto.randomUUID();
+}
 
 /**
  * Transforms a Firestore document snapshot into a typed object.
@@ -135,6 +142,7 @@ export const getDocuments = <T>({
  * @param {DocumentData} options.data - The data to set in the document.
  * @returns {Promise<T & { id: string; createdAt?: Timestamp; updatedAt?: Timestamp }>} - A promise that resolves to the document data with metadata.
  */
+
 export const setDocument = async <T>({
   path,
   id,
@@ -142,7 +150,7 @@ export const setDocument = async <T>({
 }: SetDocumentOptions<T>): Promise<
   T & { id: string; createdAt?: Timestamp; updatedAt?: Timestamp }
 > => {
-  const docID = id ?? randomUUID();
+  const docID = id ?? getRandomUUID();
   const q = doc(db, path, docID);
 
   const body: DocumentData = {
