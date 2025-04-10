@@ -128,6 +128,15 @@ export default function SignIn() {
           </div>
 
           <p className="text-center text-sm font-medium">
+            <Link
+              href="/auth/recovery"
+              className="text-primary hover:text-primary/80"
+            >
+              Forgot your password?
+            </Link>
+          </p>
+
+          <p className="text-center text-sm font-medium">
             Don&apos;t have an account?
             <Link
               href="/auth/signup"

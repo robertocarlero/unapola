@@ -2,6 +2,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 
 import { setUser } from '@/api/users';
@@ -88,6 +89,23 @@ export const logout = async () => {
   } catch (error) {
     const { code, message } = error as { code: string; message: string };
     console.log('Error on logout:', code, message);
+    throw new Error(AUTH_ERRORS[code as keyof typeof AUTH_ERRORS]);
+  }
+};
+
+/**
+ * Sends a password reset email to the user.
+ *
+ * @param {Object} options - The options for sending a password reset email.
+ * @param {string} options.email - The user's email.
+ * @throws Will throw an error if the password reset email fails to send.
+ */
+export const recoveryPassword = async ({ email }: { email: string }) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    const { code, message } = error as { code: string; message: string };
+    console.log('Error on reset password:', code, message);
     throw new Error(AUTH_ERRORS[code as keyof typeof AUTH_ERRORS]);
   }
 };
