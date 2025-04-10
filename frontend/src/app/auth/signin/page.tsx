@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-import { signIn } from '@/api/auth';
+import { signIn } from '@/lib/api/auth';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';

@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-import { FIREBASE_CONFIG } from '@/constants/config';
+import { FIREBASE_CONFIG } from '@/lib/constants/config';
 
 const app = initializeApp(FIREBASE_CONFIG);
 export const auth = getAuth(app);

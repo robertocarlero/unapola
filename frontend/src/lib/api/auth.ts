@@ -5,11 +5,11 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 
-import { setUser } from '@/api/users';
-import { auth } from '@/api';
+import { setUser } from '@/lib/api/users';
+import { auth } from '@/lib/api';
 
-import { AUTH_ERRORS } from '@/constants/errors';
-import { User } from '@/types/users';
+import { AUTH_ERRORS } from '@/lib/constants/errors';
+import { User } from '@/lib/types/users';
 
 type SignUpOptions = {
   password: string;

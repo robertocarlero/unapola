@@ -6,7 +6,7 @@ import { ImagePlusIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { Sizes } from '@/types/theme';
+import { Sizes } from '@/lib/types/theme';
 import { cn } from '@/lib/utils';
 
 type InputFileProps = {

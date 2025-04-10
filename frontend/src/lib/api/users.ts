@@ -1,12 +1,12 @@
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { randomUUID } from 'crypto';
 
-import { db } from '@/api';
-import { getDocument, setDocument, transformDocument } from '@/lib/db';
-import { uploadFile } from '@/lib/storage';
+import { db } from '@/lib/api';
+import { getDocument, setDocument, transformDocument } from '@/lib/helpers/db';
+import { uploadFile } from '@/lib/helpers/storage';
 
-import { COLLECTIONS } from '@/constants/collections';
-import { User } from '@/types/users';
+import { COLLECTIONS } from '@/lib/constants/collections';
+import { User } from '@/lib/types/users';
 
 type GetUserOptions = {
   id: string;

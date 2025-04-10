@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
 
-import { signUp } from '@/api/auth';
-import { getUserByUsername } from '@/api/users';
+import { signUp } from '@/lib/api/auth';
+import { getUserByUsername } from '@/lib/api/users';
 
 import { ImageInput } from '@/components/ui/image-input';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { Sizes } from '@/types/theme';
+import { Sizes } from '@/lib/types/theme';
 
 interface FormData {
   fullName: string;

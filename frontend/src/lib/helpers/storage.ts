@@ -1,10 +1,10 @@
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { randomUUID } from 'crypto';
 
-import { storage } from '@/api';
-import { normalizeString } from '@/lib/strings';
+import { storage } from '@/lib/api';
+import { normalizeString } from '@/lib/helpers/strings';
 
-import { UploadFileOptions, FileObject } from '@/types/storage';
+import { UploadFileOptions, FileObject } from '@/lib/types/storage';
 
 /**
  * Uploads a file to Firebase storage and returns a FileObject containing the file's URL, name, and full path.

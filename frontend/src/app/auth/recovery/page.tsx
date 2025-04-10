@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
 
-import { recoveryPassword } from '@/api/auth';
+import { recoveryPassword } from '@/lib/api/auth';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 

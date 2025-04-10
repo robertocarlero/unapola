@@ -12,14 +12,14 @@ import {
 } from 'firebase/firestore';
 import { randomUUID } from 'crypto';
 
-import { db } from '@/api';
+import { db } from '@/lib/api';
 
 import {
   GetDocumentOptions,
   SetDocumentOptions,
   Snapshot,
   TransformDocumentResult,
-} from '@/types/db';
+} from '@/lib/types/db';
 
 /**
  * Transforms a Firestore document snapshot into a typed object.

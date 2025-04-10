@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Sizes } from '@/types/theme';
+import { Sizes } from '@/lib/types/theme';
 import { useMemo } from 'react';
 
 interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
