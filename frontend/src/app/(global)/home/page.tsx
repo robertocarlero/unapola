@@ -1,7 +1,9 @@
 'use client';
 
-import { useAuth } from '@/context/AuthContext';
 import { redirect } from 'next/navigation';
+
+import { useAuth } from '@/context/AuthContext';
+import { HangoutsList } from '@/components/hangouts/hangouts-list';
 
 export default function Home() {
   const { user } = useAuth();
@@ -10,5 +12,9 @@ export default function Home() {
     return redirect('/auth/signin');
   }
 
-  return <div>Home</div>;
+  return (
+    <div>
+      <HangoutsList />
+    </div>
+  );
 }
