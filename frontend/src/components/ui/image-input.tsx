@@ -22,6 +22,7 @@ export function ImageInput({
   value,
   onChange,
   size = Sizes.md,
+  className,
   ...props
 }: InputFileProps) {
   const [image, setImage] = useState<File | null>(null);
@@ -81,7 +82,8 @@ export function ImageInput({
         htmlFor={props.id || 'picture'}
         className={cn(
           sizeClass,
-          'cursor-pointer overflow-hidden rounded-full border border-dashed border-gray-300'
+          'cursor-pointer overflow-hidden rounded-full border border-dashed border-gray-300',
+          className
         )}
       >
         <div className="h-full w-full overflow-hidden rounded-full">
@@ -100,7 +102,13 @@ export function ImageInput({
           )}
         </div>
       </Label>
-      <Input id="picture" type="file" onChange={handleInputChange} {...props} />
+      <Input
+        className="hidden"
+        id="picture"
+        type="file"
+        onChange={handleInputChange}
+        {...props}
+      />
     </div>
   );
 }
