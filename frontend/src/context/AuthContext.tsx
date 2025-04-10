@@ -1,5 +1,12 @@
 'use client';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 
 import { auth } from '@/lib/api';
@@ -28,8 +35,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const fn = useCallback(() => getUser({ id: user?.uid ?? '' }), [user?.uid]);
+
   const { data: userData, loading: loadingUserData } = useSnapshot({
-    fn: () => getUser({ id: user?.uid ?? '' }),
+    fn,
     active: !!user?.uid,
   });
 
