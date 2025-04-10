@@ -5,11 +5,14 @@ import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { auth } from '@/lib/api';
 
 import { User } from '@/lib/types/users';
+import { useSnapshot } from '@/lib/hooks/useSnapshot';
+import { getUser } from '@/lib/api/users';
 
 interface AuthContextType {
   user: FirebaseUser | null;
   loading: boolean;
   userData: User | null;
+  loadingUserData: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -25,6 +28,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const { data: userData, loading: loadingUserData } = useSnapshot({
+    fn: () => getUser({ id: user?.uid ?? '' }),
+    active: !!user?.uid,
+  });
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -38,8 +46,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({
       user,
       loading,
+      userData,
+      loadingUserData,
     }),
-    [user, loading]
+    [user, loading, userData, loadingUserData]
   );
 
   return (

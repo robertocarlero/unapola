@@ -17,9 +17,9 @@ type GetUserOptions = {
  *
  * @param {GetUserOptions} options - The options containing the user ID.
  * @param {string} options.id - The user ID.
- * @returns {Promise<User>} A promise that resolves to the user document.
+ * @returns {Snapshot<T>} A promise that resolves to the user document.
  */
-export const getUser = async ({ id }: GetUserOptions) => {
+export const getUser = ({ id }: GetUserOptions) => {
   return getDocument<User>({ path: COLLECTIONS.USERS, id });
 };
 
