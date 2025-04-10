@@ -57,12 +57,12 @@ export default function SignUp() {
     }[] => [
       {
         name: 'fullName',
-        label: 'Full Name',
+        label: 'Nombre Completo',
         minLength: 3,
       },
       {
         name: 'email',
-        label: 'Email Address',
+        label: 'Correo Electrónico',
         autoComplete: 'email',
         onBlur: () => {
           if (formData?.username) return;
@@ -72,12 +72,12 @@ export default function SignUp() {
       },
       {
         name: 'username',
-        label: 'Username',
+        label: 'Nombre de Usuario',
         minLength: 3,
       },
       {
         name: 'password',
-        label: 'Password',
+        label: 'Contraseña',
         type: 'password',
         autoComplete: 'new-password',
       },
@@ -89,7 +89,7 @@ export default function SignUp() {
     const errors: Partial<Record<keyof FormData, string>> = fields.reduce(
       (acc, field) => {
         if (!data[field.name]) {
-          acc[field.name] = `${field.label} is required`;
+          acc[field.name] = `${field.label} es requerido`;
         }
         return acc;
       },
@@ -101,7 +101,7 @@ export default function SignUp() {
         username: data.username,
       });
       if (usernameExists) {
-        errors.username = 'Username already exists';
+        errors.username = 'El nombre de usuario ya existe';
       }
     }
     return errors;
@@ -121,7 +121,7 @@ export default function SignUp() {
         ...formData,
         image,
       });
-      toast.success('Account created successfully');
+      toast.success('Cuenta creada correctamente');
     } catch (err) {
       toast.error((err as Error).message);
       console.error(err);
@@ -142,10 +142,10 @@ export default function SignUp() {
       <div className="w-full max-w-md">
         <div>
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
-            Sign Up
+            Registro
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Register and drink with your friends
+            Regístrate y bebe con tus amigos
           </p>
         </div>
 
@@ -173,7 +173,7 @@ export default function SignUp() {
                   required
                   value={formData[name]}
                   onChange={handleChange}
-                  placeholder={`Type your ${label}`}
+                  placeholder={`Escribe tu ${label}`}
                   aria-invalid={!!errors[name]}
                   {...rest}
                 />
@@ -186,17 +186,17 @@ export default function SignUp() {
 
           <div className="w-full">
             <Button disabled={loading} type="submit" className="w-full">
-              {loading ? 'Loading...' : 'Sign Up'}
+              {loading ? 'Cargando...' : 'Registrarse'}
             </Button>
           </div>
 
           <p className="text-center text-sm font-medium">
-            Already have an account?
+            ¿Ya tienes una cuenta?
             <Link
               href="/auth/signin"
               className="text-primary hover:text-primary/80 ml-1"
             >
-              Sign in
+              Inicia sesión
             </Link>
           </p>
         </form>

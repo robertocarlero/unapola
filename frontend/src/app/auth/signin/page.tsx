@@ -41,12 +41,12 @@ export default function SignIn() {
     }[] => [
       {
         name: 'email',
-        label: 'Email Address',
+        label: 'Correo electrónico',
         autoComplete: 'email',
       },
       {
         name: 'password',
-        label: 'Password',
+        label: 'Contraseña',
         type: 'password',
         autoComplete: 'current-password',
       },
@@ -58,7 +58,7 @@ export default function SignIn() {
     const errors: Partial<Record<keyof FormData, string>> = fields.reduce(
       (acc, field) => {
         if (!data[field.name]) {
-          acc[field.name] = `${field.label} is required`;
+          acc[field.name] = `${field.label} es requerido`;
         }
         return acc;
       },
@@ -78,7 +78,7 @@ export default function SignIn() {
         throw new Error('Validation errors');
       }
       await signIn(formData);
-      toast.success('Signed in successfully');
+      toast.success('Iniciado sesión correctamente');
     } catch (err) {
       toast.error((err as Error).message);
       console.error(err);
@@ -92,10 +92,10 @@ export default function SignIn() {
       <div className="w-full max-w-md space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign In
+            Iniciar sesión
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Welcome back! Please sign in to your account
+            ¡Bienvenido de nuevo! Por favor, inicia sesión en tu cuenta
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default function SignIn() {
                   required
                   value={formData[name]}
                   onChange={handleChange}
-                  placeholder={`Type your ${label}`}
+                  placeholder={`Escribe tu ${label}`}
                   aria-invalid={!!errors[name]}
                   {...rest}
                 />
@@ -123,7 +123,7 @@ export default function SignIn() {
 
           <div className="w-full">
             <Button disabled={loading} type="submit" className="w-full">
-              {loading ? 'Loading...' : 'Sign In'}
+              {loading ? 'Cargando...' : 'Iniciar Sesión'}
             </Button>
           </div>
 
@@ -132,17 +132,17 @@ export default function SignIn() {
               href="/auth/recovery"
               className="text-primary hover:text-primary/80"
             >
-              Forgot your password?
+              ¿Olvidaste tu contraseña?
             </Link>
           </p>
 
           <p className="text-center text-sm font-medium">
-            Don&apos;t have an account?
+            ¿No tienes una cuenta?
             <Link
               href="/auth/signup"
               className="text-primary hover:text-primary/80 ml-1"
             >
-              Sign up
+              Regístrate
             </Link>
           </p>
         </form>

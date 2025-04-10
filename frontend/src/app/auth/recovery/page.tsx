@@ -15,10 +15,10 @@ export default function Recovery() {
 
   const validate = (email: string) => {
     if (!email) {
-      return 'Email is required';
+      return 'Correo electrónico es requerido';
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
-      return 'Please enter a valid email address';
+      return 'Por favor, ingrese una dirección de correo electrónico válida';
     }
     return '';
   };
@@ -34,7 +34,7 @@ export default function Recovery() {
         throw new Error(validationError);
       }
       await recoveryPassword({ email });
-      toast.success('Recovery email sent successfully');
+      toast.success('Correo de recuperación enviado correctamente');
     } catch (err) {
       toast.error((err as Error).message);
       console.error(err);
@@ -55,18 +55,18 @@ export default function Recovery() {
       <div className="flex h-full w-full max-w-md flex-col items-center pt-12">
         <div>
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
-            Recover Password
+            Recuperar contraseña
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address and we&apos;ll send you a link to reset
-            your password
+            Ingresa tu correo electrónico y te enviaremos un enlace para
+            restablecer tu contraseña
           </p>
         </div>
 
         <form className="mt-8 w-full space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-4 rounded-lg sm:bg-white sm:p-4 sm:shadow-sm">
             <fieldset>
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">Correo electrónico</label>
               <Input
                 id="email"
                 name="email"
@@ -74,7 +74,7 @@ export default function Recovery() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Type your email"
+                placeholder="Escribe tu correo electrónico"
                 aria-invalid={!!error}
                 autoComplete="email"
               />
@@ -84,17 +84,17 @@ export default function Recovery() {
 
           <div className="w-full">
             <Button disabled={loading} type="submit" className="w-full">
-              {loading ? 'Loading...' : 'Send Recovery Link'}
+              {loading ? 'Cargando...' : 'Enviar enlace de recuperación'}
             </Button>
           </div>
 
           <p className="text-center text-sm font-medium">
-            Remember your password?
+            ¿Recuerdas tu contraseña?
             <Link
               href="/auth/signin"
               className="text-primary hover:text-primary/80 ml-1"
             >
-              Sign in
+              Iniciar sesión
             </Link>
           </p>
         </form>

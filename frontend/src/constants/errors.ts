@@ -1,12 +1,14 @@
 export const AUTH_ERRORS = {
   'auth/email-already-in-use':
-    'The email address is already in use by another account.',
-  'auth/invalid-email': 'The email address is invalid.',
-  'auth/weak-password': 'The password must be at least 6 characters long.',
+    'El correo electrónico ya está en uso por otra cuenta.',
+  'auth/invalid-email': 'El correo electrónico es inválido.',
+  'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
   'auth/admin-restricted-operation':
-    'An error occurred while trying to sign in. Please try again later.',
-  'auth/user-not-found': 'The user does not exist.',
-  'auth/wrong-password': 'The password is incorrect.',
-  'auth/too-many-requests': 'Too many requests. Please try again later.',
-  'auth/invalid-credential': 'The email or password is incorrect.',
+    'Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.',
+  'auth/user-not-found': 'El usuario no existe.',
+  'auth/wrong-password': 'La contraseña es incorrecta.',
+  'auth/too-many-requests':
+    'Demasiadas solicitudes. Por favor, inténtalo de nuevo más tarde.',
+  'auth/invalid-credential':
+    'El correo electrónico o la contraseña es incorrecta.',
 };

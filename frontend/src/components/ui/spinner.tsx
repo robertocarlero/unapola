@@ -29,7 +29,7 @@ export function Spinner({
       )}
       {...props}
     >
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">Cargando...</span>
     </div>
   );
 }
