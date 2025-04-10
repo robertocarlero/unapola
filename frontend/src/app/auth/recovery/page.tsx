@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { ArrowLeft } from 'lucide-react';
 
 import { recoveryPassword } from '@/api/auth';
 import { Input } from '@/components/ui/input';
@@ -43,10 +44,17 @@ export default function Recovery() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+    <div className="flex min-h-screen flex-col items-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <header className="w-full">
+        <Button asChild variant="default" size="icon" className="mb-4">
+          <Link href="/auth/signin">
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+        </Button>
+      </header>
+      <div className="flex h-full w-full max-w-md flex-col items-center pt-12">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Recover Password
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
@@ -55,7 +63,7 @@ export default function Recovery() {
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 w-full space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-4 rounded-lg sm:bg-white sm:p-4 sm:shadow-sm">
             <fieldset>
               <label htmlFor="email">Email Address</label>
