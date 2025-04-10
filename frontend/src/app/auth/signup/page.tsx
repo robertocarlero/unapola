@@ -64,6 +64,7 @@ export default function SignUp() {
         name: 'email',
         label: 'Correo Electrónico',
         autoComplete: 'email',
+        type: 'email',
         onBlur: () => {
           if (formData?.username) return;
           const username = formData?.email.split('@')[0];
@@ -80,6 +81,7 @@ export default function SignUp() {
         label: 'Contraseña',
         type: 'password',
         autoComplete: 'new-password',
+        minLength: 6,
       },
     ],
     [formData?.email, formData?.username]

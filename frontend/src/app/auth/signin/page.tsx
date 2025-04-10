@@ -38,17 +38,20 @@ export default function SignIn() {
       label: string;
       autoComplete?: string;
       type?: string;
+      minLength?: number;
     }[] => [
       {
         name: 'email',
         label: 'Correo electrónico',
         autoComplete: 'email',
+        type: 'email',
       },
       {
         name: 'password',
         label: 'Contraseña',
         type: 'password',
         autoComplete: 'current-password',
+        minLength: 6,
       },
     ],
     []
