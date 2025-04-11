@@ -8,4 +8,5 @@ export type FileObject = {
   url: string;
   fileName: string;
   fullPath: string;
+  url_thumb?: string;
 };

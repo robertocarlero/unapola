@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { HangoutDetailSkeleton } from './skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BeersList } from '@/components/beers/beers-list';
 
 export function HangoutDetail() {
   const { focusedHangout } = useHangoutContext();
@@ -67,7 +68,7 @@ export function HangoutDetail() {
         </TabsList>
         <TabsContent value="rounds">
           <div className="flex flex-col gap-4">
-            <p>Rondas</p>
+            <BeersList className="grid grid-cols-1 gap-4 md:grid-cols-2" />
           </div>
         </TabsContent>
         <TabsContent value="participants">
