@@ -4,7 +4,7 @@ import { FileObject } from './storage';
 export type Hangout = {
   id: string;
   name: string;
-  date: Timestamp | Date;
+  date: Timestamp;
   address: string;
   image?: FileObject;
   createdAt?: Timestamp;

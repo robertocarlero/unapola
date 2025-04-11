@@ -1,6 +1,11 @@
 import { limit, orderBy, where } from 'firebase/firestore';
 
-import { getDocuments, getRandomUUID, setDocument } from '@/lib/helpers/db';
+import {
+  getDocument,
+  getDocuments,
+  getRandomUUID,
+  setDocument,
+} from '@/lib/helpers/db';
 import { uploadFile } from '@/lib/helpers/storage';
 
 import { COLLECTIONS } from '@/lib/constants/collections';
@@ -66,5 +71,18 @@ export const getHangouts = ({ participantId }: GetHangoutsParams) => {
   return getDocuments<Hangout[]>({
     path: collection,
     queries,
+  });
+};
+
+/**
+ * Retrieves a hangout document from the database by its ID.
+ *
+ * @param {string} id - The ID of the hangout to retrieve.
+ * @returns {Snapshot<Hangout>} A promise that resolves with the hangout document or null if it doesn't exist.
+ */
+export const getHangout = (id: string) => {
+  return getDocument<Hangout>({
+    path: collection,
+    id,
   });
 };
