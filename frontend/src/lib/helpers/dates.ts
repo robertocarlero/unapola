@@ -2,10 +2,14 @@ import { Timestamp } from 'firebase/firestore';
 
 /**
  * Format a date to a string
- * @param {Date | Timestamp | string | undefined} date - The date to format
- * @returns {string} The formatted date Martes 11, abril 2025
+ * @param date - The date to format
+ * @param options - The options to format the date
+ * @returns The formatted date Martes 11, abril 2025
  */
-export const formatDate = (date: Date | Timestamp | string | undefined) => {
+export const formatDate = (
+  date: Date | Timestamp | string | undefined,
+  options?: Intl.DateTimeFormatOptions
+) => {
   if (!date) return '';
 
   let newDate: Date = date as Date;
@@ -18,12 +22,15 @@ export const formatDate = (date: Date | Timestamp | string | undefined) => {
     newDate = date.toDate();
   }
 
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
+  const defaultOptions: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
     day: 'numeric',
-    month: 'long',
+    month: 'short',
     year: 'numeric',
   };
 
-  return newDate.toLocaleDateString('es-ES', options);
+  return newDate.toLocaleDateString('es-ES', {
+    ...defaultOptions,
+    ...options,
+  });
 };

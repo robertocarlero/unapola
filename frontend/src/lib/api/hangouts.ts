@@ -102,3 +102,20 @@ export const createRound = (data: Partial<Round>) => {
 
   return setDocument<Round>({ path, data });
 };
+
+type GetRoundsParams = {
+  hangoutId: string;
+};
+
+/**
+ * Retrieves rounds for a specific hangout from the database.
+ *
+ * @param  params - The parameters for retrieving rounds.
+ * @param  params.hangoutId - The ID of the hangout to retrieve rounds for.
+ * @returns  A snapshot with an array of rounds.
+ */
+export const getRounds = ({ hangoutId }: GetRoundsParams) => {
+  const path = `${collection}/${hangoutId}/${roundsCollection}`;
+
+  return getDocuments<Round[]>({ path });
+};

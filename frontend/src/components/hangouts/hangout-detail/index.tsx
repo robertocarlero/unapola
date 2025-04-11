@@ -12,6 +12,7 @@ import { HangoutDetailSkeleton } from './skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { OrderForm } from '@/components/orders/order-form';
 import { HangoutInfo } from '../hangout-info';
+import { OrderList } from '@/components/orders/order-list';
 
 export function HangoutDetail() {
   const { focusedHangout } = useHangoutContext();
@@ -58,7 +59,7 @@ export function HangoutDetail() {
         </div>
       </div>
 
-      <Tabs defaultValue="rounds" className="m-auto w-full max-w-4xl">
+      <Tabs defaultValue="rounds" className="m-auto w-full max-w-3xl">
         <TabsList className="m-auto mb-12">
           <TabsTrigger value="rounds">Rondas</TabsTrigger>
           <TabsTrigger value="participants">Participantes</TabsTrigger>
@@ -81,6 +82,7 @@ export function HangoutDetail() {
               isOpen={formOpen}
               onClose={handleOnFormClose}
             />
+            <OrderList hangoutId={focusedHangout} />
           </div>
         </TabsContent>
         <TabsContent value="participants">
