@@ -1,17 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import { memo, useMemo } from 'react';
-import { CheckIcon, TrashIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import { formatDate } from '@/lib/helpers/dates';
 import { getRandomHexColor } from '@/lib/helpers/strings';
 
 import { Hangout } from '@/lib/types/hangouts';
-import { Button } from '../ui/button';
-import { toast } from 'sonner';
-import { setHangout } from '@/lib/api/hangouts';
-import { useAuth } from '@/context/AuthContext';
+import { HangoutCancelButton } from './hangout-cancel-button';
 
 type HangoutCardProps = {
   data: Hangout;
@@ -21,32 +17,11 @@ type HangoutCardProps = {
 
 export const HangoutCard = memo(
   ({ data, focused, onClick }: HangoutCardProps) => {
-    const { user } = useAuth();
-    const { name, address, date, image, id, cancelled, createdBy } = data || {};
-
-    const isOwner = useMemo(
-      () => createdBy === user?.uid,
-      [createdBy, user?.uid]
-    );
+    const { name, address, date, image, cancelled } = data || {};
 
     const color = useMemo(() => getRandomHexColor(), []);
 
     const formattedDate = useMemo(() => formatDate(date), [date]);
-
-    const handleToggleStateButtonClick = async (
-      e: React.MouseEvent<HTMLButtonElement>
-    ) => {
-      e.stopPropagation();
-      e.preventDefault();
-
-      try {
-        await setHangout({ id, data: { cancelled: !cancelled } });
-        toast.success(`Juntada ${cancelled ? 'activada' : 'cancelada'}`);
-      } catch (error) {
-        console.error(error);
-        toast.error('Error al cancelar la juntada');
-      }
-    };
 
     const shakeAnimation = {
       scale: focused ? 1.02 : 1,
@@ -75,20 +50,11 @@ export const HangoutCard = memo(
         transition={shakeTransition}
         whileHover={{ scale: 1.01 }}
       >
-        {isOwner && (
-          <Button
-            variant={cancelled ? 'default' : 'destructive'}
-            size="icon"
-            className="absolute top-2 right-2"
-            onClick={handleToggleStateButtonClick}
-          >
-            {cancelled ? (
-              <CheckIcon className="h-4 w-4" />
-            ) : (
-              <TrashIcon className="h-4 w-4" />
-            )}
-          </Button>
-        )}
+        <HangoutCancelButton
+          className="absolute top-2 right-2"
+          data={data}
+          isIconButton
+        />
         {
           <picture className="h-40 w-full overflow-hidden">
             {image ? (

@@ -4,18 +4,19 @@ import { PlusIcon } from 'lucide-react';
 
 import { getHangout } from '@/lib/api/hangouts';
 import { useSnapshot } from '@/lib/hooks/useSnapshot';
-import { formatDate } from '@/lib/helpers/dates';
+import { useDeviceSize } from '@/lib/hooks/useDeviceSize';
 
 import { useHangoutContext } from '@/context/HangoutContext';
-import { Badge } from '@/components/ui/badge';
-import { HangoutDetailSkeleton } from './skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { OrderForm } from '@/components/orders/order-form';
 import { HangoutInfo } from '../hangout-info';
 import { OrderList } from '@/components/orders/order-list';
+import { HangoutCancelButton } from '../hangout-cancel-button';
+import { HangoutDetailSkeleton } from './skeleton';
 
 export function HangoutDetail() {
   const { focusedHangout } = useHangoutContext();
+  const { isSmall } = useDeviceSize();
   const [formOpen, setFormOpen] = useState(false);
 
   const fn = useCallback(() => getHangout(focusedHangout), [focusedHangout]);
@@ -24,15 +25,6 @@ export function HangoutDetail() {
     fn,
     active: !!focusedHangout,
   });
-
-  const { date, cancelled } = hangout || {};
-
-  const time =
-    date?.toDate?.().toLocaleTimeString?.('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    }) ?? '';
-  const formattedDate = formatDate(date?.toDate?.());
 
   const handleOnNewRoundClick = () => {
     setFormOpen(true);
@@ -49,13 +41,7 @@ export function HangoutDetail() {
       <div className="flex w-full justify-between">
         <HangoutInfo hangout={hangout} />
         <div className="flex flex-col items-end gap-2">
-          <p className="text-sm capitalize">{formattedDate}</p>
-          <div className="flex items-center gap-2">
-            <Badge variant={cancelled ? 'destructive' : 'default'}>
-              {cancelled ? 'Cancelada' : 'Activa'}
-            </Badge>
-            <p className="text-xs text-gray-500">{time}</p>
-          </div>
+          <HangoutCancelButton data={hangout} isIconButton={isSmall} />
         </div>
       </div>
 
