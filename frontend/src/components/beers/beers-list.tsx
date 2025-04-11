@@ -21,7 +21,7 @@ export const BeersList = (props: BeersListProps) => {
   return (
     <div {...props}>
       {loading
-        ? Array(3).map((_, index) => <BeerItemSkeleton key={index} />)
+        ? [1, 2, 3, 4].map((index) => <BeerItemSkeleton key={index} />)
         : beers?.map((beer) => (
             <BeerItem key={beer.id} data={beer} onAddToCart={handleAddToCart} />
           ))}
