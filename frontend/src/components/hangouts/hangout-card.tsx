@@ -17,7 +17,7 @@ type HangoutCardProps = {
 
 export const HangoutCard = memo(
   ({ data, focused, onClick }: HangoutCardProps) => {
-    const { name, address, date, image, cancelled } = data || {};
+    const { name, address, date, image, cancelled, paid } = data || {};
 
     const color = useMemo(() => getRandomHexColor(), []);
 
@@ -38,6 +38,18 @@ export const HangoutCard = memo(
         duration: 0.15,
       },
     };
+
+    const status = useMemo(() => {
+      if (cancelled) return 'Cancelada';
+      if (paid) return 'Finalizada';
+      return 'Activa';
+    }, [cancelled, paid]);
+
+    const statusColor = useMemo(() => {
+      if (cancelled) return 'text-red-500';
+      if (paid) return 'text-amber-500';
+      return 'text-green-500';
+    }, [cancelled, paid]);
 
     return (
       <motion.div
@@ -77,11 +89,7 @@ export const HangoutCard = memo(
           <h3 className="text-lg font-bold">{name}</h3>
           <p className="mt-[-8px] text-sm text-gray-500">{address}</p>
           <p className="text-xs text-gray-500 capitalize">{formattedDate}</p>
-          <p
-            className={`text-xs capitalize ${cancelled ? 'text-red-500' : 'text-green-500'}`}
-          >
-            {cancelled ? 'Cancelada' : 'Activa'}
-          </p>
+          <p className={`text-xs capitalize ${statusColor}`}>{status}</p>
         </div>
       </motion.div>
     );

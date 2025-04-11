@@ -10,4 +10,6 @@ export interface Hangout extends Document {
   createdBy: string;
   participants: string[];
   cancelled?: boolean;
+  paid?: boolean;
+  paidAt?: Timestamp;
 }

@@ -21,7 +21,7 @@ export const HangoutCancelButton = ({
   isIconButton = false,
 }: HangoutCancelButtonProps) => {
   const { user } = useAuth();
-  const { cancelled, createdBy, id } = data || {};
+  const { cancelled, createdBy, id, paid } = data || {};
 
   const isOwner = useMemo(
     () => createdBy === user?.uid,
@@ -53,7 +53,7 @@ export const HangoutCancelButton = ({
     return 'destructive';
   }, [cancelled]);
 
-  if (!isOwner) return null;
+  if (!isOwner || paid) return null;
 
   return (
     <Button

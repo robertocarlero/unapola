@@ -1,8 +1,10 @@
+import { useMemo, memo } from 'react';
+
+import { formatDate } from '@/lib/helpers/dates';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { formatDate } from '@/lib/helpers/dates';
 import { Round } from '@/lib/types/beers';
-import { useMemo } from 'react';
 
 export * from './skeleton';
 
@@ -10,7 +12,7 @@ type OrderItemProps = {
   data: Round | null;
 };
 
-export const OrderItem = ({ data }: OrderItemProps) => {
+export const OrderItem = memo(({ data }: OrderItemProps) => {
   const { items, createdAt } = data || {};
 
   const total = useMemo(
@@ -26,7 +28,6 @@ export const OrderItem = ({ data }: OrderItemProps) => {
     [items]
   );
 
-  // DD, dd/mm/yyyy hh:mm
   const formattedDate = useMemo(
     () =>
       formatDate(createdAt?.toDate?.(), {
@@ -61,4 +62,6 @@ export const OrderItem = ({ data }: OrderItemProps) => {
       </div>
     </div>
   );
-};
+});
+
+OrderItem.displayName = 'OrderItem';
