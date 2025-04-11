@@ -12,6 +12,9 @@ import { HangoutCancelButton } from '../hangout-cancel-button';
 import { HangoutInfo } from '../hangout-info';
 import { HangoutDetailSkeleton } from './skeleton';
 import { HangoutFinish } from '../hangout-finish';
+import { HangoutsParticipantsList } from '../hangouts-participants-list';
+import { setHangout } from '@/lib/api/hangouts';
+import { toast } from 'sonner';
 
 export function HangoutDetail() {
   const { focusedHangout, hangout, loading } = useHangoutContext();
@@ -25,6 +28,27 @@ export function HangoutDetail() {
   const handleOnFormClose = () => {
     setFormOpen(false);
   };
+
+  const handleOnAddParticipant = async (userId: string) => {
+    const { participants = [] } = hangout || {};
+    const alreadyExists = participants.includes(userId);
+    if (alreadyExists) {
+      toast.error('El participante ya existe');
+      return;
+    }
+    try {
+      await setHangout({
+        id: focusedHangout,
+        data: { participants: [...participants, userId] },
+      });
+      toast.success('Participante añadido correctamente');
+    } catch (error) {
+      console.error(error);
+      toast.error('Error al añadir participante');
+    }
+  };
+
+  if (!focusedHangout) return null;
 
   if (loading) return <HangoutDetailSkeleton />;
 
@@ -70,7 +94,10 @@ export function HangoutDetail() {
         </TabsContent>
         <TabsContent value="participants">
           <div className="flex flex-col gap-4">
-            <p>Participantes</p>
+            <HangoutsParticipantsList
+              hangout={hangout}
+              onAddParticipant={handleOnAddParticipant}
+            />
           </div>
         </TabsContent>
         <TabsContent value="settings">

@@ -160,7 +160,6 @@ export default function SignUp() {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="hidden"
                 value={image}
                 size={Sizes.xl}
               />

@@ -1,11 +1,26 @@
 'use client';
-import { useAuth } from '@/context/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { UserInfoSkeleton } from './skeleton';
+import { getUserById } from '@/lib/api/users';
+import { useCallback } from 'react';
+import { useSnapshot } from '@/lib/hooks/useSnapshot';
 
-export const UserInfo = () => {
-  const { userData, loadingUserData } = useAuth();
+type UserInfoProps = {
+  userId: string | null;
+};
+
+export const UserInfo = ({ userId }: UserInfoProps) => {
+  const getUser = useCallback(
+    () => getUserById({ id: userId ?? '' }),
+    [userId]
+  );
+
+  const { data: userData, loading: loadingUserData } = useSnapshot({
+    fn: getUser,
+    active: !!userId,
+  });
+
   const { avatar, fullName, username } = userData ?? {};
 
   const initials = fullName?.[0];
@@ -15,7 +30,11 @@ export const UserInfo = () => {
   return (
     <div className="flex items-center gap-2">
       <Avatar className="h-12 w-12">
-        <AvatarImage src={avatar?.url} />
+        <AvatarImage
+          src={avatar?.url}
+          className="object-cover"
+          alt={fullName ?? ''}
+        />
         <AvatarFallback>{initials}</AvatarFallback>
       </Avatar>
       <div className="flex flex-col">

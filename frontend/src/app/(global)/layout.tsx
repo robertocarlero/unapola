@@ -6,7 +6,6 @@ import { logout } from '@/lib/api/auth';
 
 import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/ui/spinner';
-import { UserInfo } from '@/components/user-info';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -20,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { HangoutProvider } from '@/context/HangoutContext';
+import { CurrentUserInfo } from '@/components/users/current-user-info';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { loading, user } = useAuth();
@@ -44,7 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <HangoutProvider>
       <section className="h-screen w-screen overflow-x-hidden">
         <header className="bg-background flex w-full items-center justify-between p-4">
-          <UserInfo />
+          <CurrentUserInfo />
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -69,7 +69,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </AlertDialogContent>
           </AlertDialog>
         </header>
-        <main className="w-full p-4">{children}</main>
+        <main className="min-h-full w-full p-4">{children}</main>
         <footer className="w-full shrink-0 p-4">
           <p className="text-center text-sm">
             Todos los derechos reservados para <strong>Parce, una pola</strong>{' '}
