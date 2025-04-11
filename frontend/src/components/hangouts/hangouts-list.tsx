@@ -37,20 +37,18 @@ export function HangoutsList() {
         <h2 className="text-xl font-bold">Juntadas para beber</h2>
         {!!user?.uid && <HangoutForm creatorId={user?.uid} />}
       </div>
-      {isLoading ? (
-        Array(3).map((_, index) => <HangoutSkeleton key={index} />)
-      ) : (
-        <div className="flex w-full gap-4 overflow-x-auto p-4">
-          {hangouts?.map((hangout) => (
-            <HangoutCard
-              key={hangout.id}
-              data={hangout}
-              focused={focusedHangout === hangout?.id}
-              onClick={() => setFocusedHangout(hangout?.id)}
-            />
-          ))}
-        </div>
-      )}
+      <div className="flex w-full gap-4 overflow-x-auto p-4">
+        {isLoading
+          ? [1, 2, 3].map((index) => <HangoutSkeleton key={index} />)
+          : hangouts?.map((hangout) => (
+              <HangoutCard
+                key={hangout.id}
+                data={hangout}
+                focused={focusedHangout === hangout?.id}
+                onClick={() => setFocusedHangout(hangout?.id)}
+              />
+            ))}
+      </div>
     </div>
   );
 }
