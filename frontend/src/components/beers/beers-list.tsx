@@ -4,18 +4,28 @@ import { getBeers } from '@/lib/api/beers';
 import { useSnapshot } from '@/lib/hooks/useSnapshot';
 import { BeerItem, BeerItemSkeleton } from './beer-item';
 import { Beer } from '@/lib/types/beers';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-type BeersListProps = React.HTMLAttributes<HTMLDivElement>;
+type BeersListProps = {
+  onChange: (beers: Beer[]) => void;
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'>;
 
-export const BeersList = (props: BeersListProps) => {
-  const [cart, setCart] = useState<Beer[]>([]);
+export const BeersList = ({ onChange, ...props }: BeersListProps) => {
+  const [cart, setCart] = useState<Map<string, Beer>>(new Map());
   const { data: beers, loading } = useSnapshot({
     fn: getBeers,
   });
 
+  useEffect(() => {
+    onChange(Array.from(cart.values()).filter((beer) => beer.quantity > 0));
+  }, [cart, onChange]);
+
   const handleAddToCart = useCallback((beer: Beer) => {
-    setCart((prev) => [...prev, beer]);
+    setCart((prev) => {
+      const newCart = new Map(prev);
+      newCart.set(beer.id, beer);
+      return newCart;
+    });
   }, []);
 
   return (

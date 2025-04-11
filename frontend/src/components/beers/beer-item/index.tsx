@@ -56,7 +56,7 @@ export const BeerItem = memo(({ data, onAddToCart }: BeerItemProps) => {
   return (
     <>
       <div
-        className="flex cursor-pointer justify-between gap-2 rounded-xl border bg-white p-4 shadow-md"
+        className="flex cursor-pointer justify-between gap-2 rounded-xl border bg-white p-2 shadow-md"
         onClick={handleContainerClick}
         role="button"
         tabIndex={0}
