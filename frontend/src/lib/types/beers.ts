@@ -9,3 +9,9 @@ export interface Beer extends Document {
   discount?: number;
   description?: string;
 }
+
+export interface Round extends Document {
+  hangoutId: string;
+  userId: string;
+  items: Beer[];
+}

@@ -1,6 +1,6 @@
 'use client';
-import { useCallback } from 'react';
-import { CheckIcon, XIcon } from 'lucide-react';
+import { useCallback, useState } from 'react';
+import { PlusIcon } from 'lucide-react';
 
 import { getHangout } from '@/lib/api/hangouts';
 import { useSnapshot } from '@/lib/hooks/useSnapshot';
@@ -8,13 +8,14 @@ import { formatDate } from '@/lib/helpers/dates';
 
 import { useHangoutContext } from '@/context/HangoutContext';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { HangoutDetailSkeleton } from './skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BeersList } from '@/components/beers/beers-list';
+import { OrderForm } from '@/components/orders/order-form';
+import { HangoutInfo } from '../hangout-info';
 
 export function HangoutDetail() {
   const { focusedHangout } = useHangoutContext();
+  const [formOpen, setFormOpen] = useState(false);
 
   const fn = useCallback(() => getHangout(focusedHangout), [focusedHangout]);
 
@@ -23,7 +24,7 @@ export function HangoutDetail() {
     active: !!focusedHangout,
   });
 
-  const { name, image, date, address, cancelled } = hangout || {};
+  const { date, cancelled } = hangout || {};
 
   const time =
     date?.toDate?.().toLocaleTimeString?.('en-US', {
@@ -32,23 +33,20 @@ export function HangoutDetail() {
     }) ?? '';
   const formattedDate = formatDate(date?.toDate?.());
 
+  const handleOnNewRoundClick = () => {
+    setFormOpen(true);
+  };
+
+  const handleOnFormClose = () => {
+    setFormOpen(false);
+  };
+
   if (loading) return <HangoutDetailSkeleton />;
 
   return (
     <section className="flex h-full w-full flex-col gap-4">
       <div className="flex w-full justify-between">
-        <div className="flex items-center gap-2">
-          <Avatar className="h-16 w-16 shadow-md">
-            <AvatarImage src={image?.url} className="object-cover" />
-            <AvatarFallback>
-              {cancelled ? <XIcon /> : <CheckIcon />}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <h2 className="text-2xl font-bold capitalize">{name}</h2>
-            <p className="text-sm text-gray-500 capitalize">{address}</p>
-          </div>
-        </div>
+        <HangoutInfo hangout={hangout} />
         <div className="flex flex-col items-end gap-2">
           <p className="text-sm capitalize">{formattedDate}</p>
           <div className="flex items-center gap-2">
@@ -67,8 +65,22 @@ export function HangoutDetail() {
           <TabsTrigger value="settings">Configuración</TabsTrigger>
         </TabsList>
         <TabsContent value="rounds">
-          <div className="flex flex-col gap-4">
-            <BeersList className="grid grid-cols-1 gap-4 md:grid-cols-2" />
+          <div className="flex w-full flex-col gap-4">
+            <div
+              className="hoover:shadow-md flex w-full cursor-pointer items-center justify-center gap-4 rounded-md border border-gray-200 bg-white p-4 hover:bg-gray-50"
+              role="button"
+              onClick={handleOnNewRoundClick}
+            >
+              <PlusIcon className="text-muted-foreground h-6 w-6" />
+              <p className="text-muted-foreground text-xl font-medium">
+                Nueva Ronda
+              </p>
+            </div>
+            <OrderForm
+              hangout={hangout}
+              isOpen={formOpen}
+              onClose={handleOnFormClose}
+            />
           </div>
         </TabsContent>
         <TabsContent value="participants">

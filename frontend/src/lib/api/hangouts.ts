@@ -10,8 +10,10 @@ import { uploadFile } from '@/lib/helpers/storage';
 
 import { COLLECTIONS } from '@/lib/constants/collections';
 import { Hangout } from '@/lib/types/hangouts';
+import { Round } from '../types/beers';
 
 const collection = COLLECTIONS.HANGOUTS;
+const roundsCollection = COLLECTIONS.ROUNDS;
 
 type SetHangoutParams = {
   id?: string;
@@ -85,4 +87,18 @@ export const getHangout = (id: string) => {
     path: collection,
     id,
   });
+};
+
+/**
+ * Creates a new round for a hangout.
+ *
+ * @param  options - The options for creating a round.
+ * @param options.data - The round data to create.
+ * @returns A promise that resolves to the created round.
+ */
+export const createRound = (data: Partial<Round>) => {
+  const { hangoutId } = data;
+  const path = `${collection}/${hangoutId}/${roundsCollection}`;
+
+  return setDocument<Round>({ path, data });
 };
