@@ -34,7 +34,7 @@ export function HangoutDetail() {
   if (loading) return <HangoutDetailSkeleton />;
 
   return (
-    <div className="flex h-full w-full flex-col gap-4">
+    <section className="flex h-full w-full flex-col gap-4">
       <div className="flex w-full justify-between">
         <div className="flex items-center gap-2">
           <Avatar className="h-16 w-16 shadow-md">
@@ -59,8 +59,8 @@ export function HangoutDetail() {
         </div>
       </div>
 
-      <Tabs defaultValue="rounds" className="w-full">
-        <TabsList className="m-auto">
+      <Tabs defaultValue="rounds" className="m-auto w-full max-w-4xl">
+        <TabsList className="m-auto mb-12">
           <TabsTrigger value="rounds">Rondas</TabsTrigger>
           <TabsTrigger value="participants">Participantes</TabsTrigger>
           <TabsTrigger value="settings">Configuración</TabsTrigger>
@@ -81,6 +81,6 @@ export function HangoutDetail() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </section>
   );
 }

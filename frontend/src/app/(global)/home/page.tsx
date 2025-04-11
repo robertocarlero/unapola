@@ -13,7 +13,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col gap-4">
+    <div className="mb-12 flex h-full w-full flex-col gap-4">
       <HangoutsList />
       <HangoutDetail />
     </div>

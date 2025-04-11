@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <HangoutProvider>
-      <section className="flex h-screen w-screen flex-col">
+      <section className="h-screen w-screen overflow-x-hidden">
         <header className="bg-background flex w-full items-center justify-between p-4">
           <UserInfo />
 
@@ -69,7 +69,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </AlertDialogContent>
           </AlertDialog>
         </header>
-        <main className="h-full w-full p-4">{children}</main>
+        <main className="w-full p-4">{children}</main>
+        <footer className="w-full shrink-0 p-4">
+          <p className="text-center text-sm">
+            Todos los derechos reservados para <strong>Parce, una pola</strong>{' '}
+            &copy; {new Date().getFullYear()}
+          </p>
+        </footer>
       </section>
     </HangoutProvider>
   );
