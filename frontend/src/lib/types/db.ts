@@ -1,7 +1,13 @@
-import { QueryConstraint, Unsubscribe } from 'firebase/firestore';
+import { QueryConstraint, Timestamp, Unsubscribe } from 'firebase/firestore';
+
+export interface Document {
+  id: string;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+}
 
 export type TransformDocumentResult<T> =
-  | ({ [K in keyof T]: T[K] } & { id: string })
+  | ({ [K in keyof T]: T[K] } & Document)
   | null;
 
 export type GetDocumentOptions<T> = {
