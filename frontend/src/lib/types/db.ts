@@ -1,4 +1,4 @@
-import { Unsubscribe } from 'firebase/firestore';
+import { QueryConstraint, Unsubscribe } from 'firebase/firestore';
 
 export type TransformDocumentResult<T> =
   | ({ [K in keyof T]: T[K] } & { id: string })
@@ -6,7 +6,8 @@ export type TransformDocumentResult<T> =
 
 export type GetDocumentOptions<T> = {
   path: string;
-  id: string;
+  id?: string;
+  queries?: QueryConstraint[];
   parseFn?: <K extends T>(
     res: TransformDocumentResult<T> | TransformDocumentResult<T>[]
   ) => TransformDocumentResult<K>;

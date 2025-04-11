@@ -5,10 +5,11 @@ import {
   DocumentSnapshot,
   getDoc,
   getDocs,
-  onSnapshot,
+  query,
   QuerySnapshot,
   setDoc,
   Timestamp,
+  onSnapshot,
 } from 'firebase/firestore';
 import * as cryptoServer from 'crypto';
 
@@ -66,10 +67,10 @@ export const getDocument = <T>({
   id,
   parseFn,
 }: GetDocumentOptions<T>): Snapshot<T> => {
-  const q = doc(db, path, id);
+  const q = doc(db, path, id ?? '');
 
   const prepareData = (data: DocumentSnapshot<DocumentData>) => {
-    if (!data.exists()) return null;
+    if (!data?.exists?.()) return null;
     const body = transformDocument<T>(data);
 
     if (parseFn) {
@@ -83,7 +84,8 @@ export const getDocument = <T>({
     collection: path,
     onSnapshot: (callback) => {
       return onSnapshot(q, (res) => {
-        const body = prepareData(res);
+        console.log('New snapshot at', path);
+        const body = prepareData(res as DocumentSnapshot<DocumentData>);
         callback(body);
       });
     },
@@ -100,16 +102,20 @@ export const getDocument = <T>({
  * @param {GetDocumentOptions<T>} options - Options for retrieving the documents.
  * @param {string} options.path - The path to the collection.
  * @param {Function} options.parseFn - A function to parse the documents data.
+ * @param {QueryConstraint[]} options.queries - The queries to apply to the collection.
  * @returns {Snapshot<T>} - An object containing methods to get the documents and listen for updates.
  */
 export const getDocuments = <T>({
   path,
   parseFn,
+  queries,
 }: GetDocumentOptions<T>): Snapshot<T> => {
-  const query = collection(db, path);
+  const ref = collection(db, path);
+
+  const q = query(ref, ...(queries ?? []));
 
   const prepareData = (data: QuerySnapshot<DocumentData, DocumentData>) => {
-    if (data.empty) return null;
+    if (data?.empty) return null;
     const body = transformDocuments<T>(data.docs);
     if (parseFn) {
       return parseFn(body);
@@ -121,13 +127,16 @@ export const getDocuments = <T>({
   return {
     collection: path,
     onSnapshot: (callback) => {
-      return onSnapshot(query, (res) => {
-        const body = prepareData(res);
+      return onSnapshot(q, (res) => {
+        console.log('New snapshot at', path);
+        const body = prepareData(
+          res as QuerySnapshot<DocumentData, DocumentData>
+        );
         callback(body);
       });
     },
     get: async () => {
-      const res = await getDocs(query);
+      const res = await getDocs(q);
       return prepareData(res);
     },
   };

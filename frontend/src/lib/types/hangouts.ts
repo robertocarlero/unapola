@@ -11,4 +11,5 @@ export type Hangout = {
   updatedAt?: Timestamp;
   createdBy: string;
   participants: string[];
+  cancelled?: boolean;
 };
