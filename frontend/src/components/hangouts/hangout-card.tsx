@@ -2,6 +2,7 @@
 'use client';
 import { useMemo } from 'react';
 import { CheckIcon, TrashIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import { formatDate } from '@/lib/helpers/dates';
 import { getRandomHexColor } from '@/lib/helpers/strings';
@@ -46,11 +47,32 @@ export function HangoutCard({ data, focused, onClick }: HangoutCardProps) {
     }
   };
 
+  const shakeAnimation = {
+    scale: focused ? 1.02 : 1,
+    rotate: focused ? [0, -2, 2, 0] : 0,
+  };
+
+  const shakeTransition = {
+    duration: 0.3,
+    type: 'spring',
+    stiffness: 300,
+    damping: 10,
+    rotate: {
+      repeat: focused ? 1 : 0,
+      duration: 0.15,
+    },
+  };
+
   return (
-    <div
-      className={`relative flex w-64 shrink-0 flex-col overflow-hidden rounded-lg bg-white shadow-md ${focused ? 'border-ring ring-ring/50 ring-[3px]' : ''} `}
+    <motion.div
+      className={`relative flex w-64 shrink-0 flex-col overflow-hidden rounded-lg bg-white shadow-md ${
+        focused ? 'border-ring ring-ring/50 ring-[3px]' : ''
+      }`}
       onClick={onClick}
       role="button"
+      animate={shakeAnimation}
+      transition={shakeTransition}
+      whileHover={{ scale: 1.01 }}
     >
       {isOwner && (
         <Button
@@ -91,6 +113,6 @@ export function HangoutCard({ data, focused, onClick }: HangoutCardProps) {
           {cancelled ? 'Cancelada' : 'Activa'}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }
