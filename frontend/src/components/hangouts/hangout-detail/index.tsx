@@ -10,6 +10,7 @@ import { useHangoutContext } from '@/context/HangoutContext';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { HangoutDetailSkeleton } from './skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export function HangoutDetail() {
   const { focusedHangout } = useHangoutContext();
@@ -57,6 +58,29 @@ export function HangoutDetail() {
           </div>
         </div>
       </div>
+
+      <Tabs defaultValue="rounds" className="w-full">
+        <TabsList className="m-auto">
+          <TabsTrigger value="rounds">Rondas</TabsTrigger>
+          <TabsTrigger value="participants">Participantes</TabsTrigger>
+          <TabsTrigger value="settings">Configuración</TabsTrigger>
+        </TabsList>
+        <TabsContent value="rounds">
+          <div className="flex flex-col gap-4">
+            <p>Rondas</p>
+          </div>
+        </TabsContent>
+        <TabsContent value="participants">
+          <div className="flex flex-col gap-4">
+            <p>Participantes</p>
+          </div>
+        </TabsContent>
+        <TabsContent value="settings">
+          <div className="flex flex-col gap-4">
+            <p>Configuración</p>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
