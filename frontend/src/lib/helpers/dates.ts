@@ -4,7 +4,14 @@ import { Timestamp } from 'firebase/firestore';
  * Format a date to a string
  * @param date - The date to format
  * @param options - The options to format the date
- * @returns The formatted date Martes 11, abril 2025
+ * @returns The formatted date in Spanish format.
+ *
+ * @example
+ * const formattedDate = formatDate(new Date());
+ * console.log(formattedDate);
+ *
+ * Response:
+ * 'sáb, 12 abr 2025'
  */
 export const formatDate = (
   date: Date | Timestamp | string | undefined,

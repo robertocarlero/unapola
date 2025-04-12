@@ -44,7 +44,7 @@ export const HangoutProvider = ({
   const { user } = useAuth();
 
   const getData = useCallback(
-    () => getHangout(focusedHangout),
+    () => getHangout({ id: focusedHangout }),
     [focusedHangout]
   );
 

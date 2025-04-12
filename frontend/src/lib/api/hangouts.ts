@@ -4,17 +4,17 @@ import {
   deleteDocument,
   getDocument,
   getDocuments,
-  getRandomUUID,
   setDocument,
 } from '@/lib/helpers/db';
+import { getRandomUUID } from '@/lib/helpers/strings';
 import { uploadFile } from '@/lib/helpers/storage';
 
 import { COLLECTIONS } from '@/lib/constants/collections';
 import { Hangout } from '@/lib/types/hangouts';
 import { Round } from '../types/beers';
 
-const collection = COLLECTIONS.HANGOUTS;
-const roundsCollection = COLLECTIONS.ROUNDS;
+const COLLECTION = COLLECTIONS.HANGOUTS;
+const ROUNDS_COLLECTION = COLLECTIONS.ROUNDS;
 
 type SetHangoutParams = {
   id?: string;
@@ -39,14 +39,14 @@ export const setHangout = async ({ id, data, image }: SetHangoutParams) => {
   if (image) {
     const result = await uploadFile({
       file: image,
-      path: `${collection}/${hangoutId}/image`,
+      path: `${COLLECTION}/${hangoutId}/image`,
     });
 
     body.image = result;
   }
 
   return setDocument({
-    path: collection,
+    path: COLLECTION,
     id: hangoutId,
     data: body,
   });
@@ -62,7 +62,6 @@ type GetHangoutsParams = {
  *
  * @param params - The parameters for retrieving hangouts.
  * @param params.participantId - The ID of the participant to filter hangouts by.
- * @returns A promise that resolves with an array of hangouts.
  */
 export const getHangouts = ({ participantId }: GetHangoutsParams) => {
   const queries = [
@@ -72,20 +71,24 @@ export const getHangouts = ({ participantId }: GetHangoutsParams) => {
   ];
 
   return getDocuments<Hangout[]>({
-    path: collection,
+    path: COLLECTION,
     queries,
   });
+};
+
+type GetHangoutParams = {
+  id: string;
 };
 
 /**
  * Retrieves a hangout document from the database by its ID.
  *
- * @param id - The ID of the hangout to retrieve.
- * @returns A promise that resolves with the hangout document or null if it doesn't exist.
+ * @param  params - The parameters for retrieving a hangout.
+ * @param  params.id - The ID of the hangout to retrieve.
  */
-export const getHangout = (id: string) => {
+export const getHangout = ({ id }: GetHangoutParams) => {
   return getDocument<Hangout>({
-    path: collection,
+    path: COLLECTION,
     id,
   });
 };
@@ -97,26 +100,33 @@ type DeleteHangoutParams = {
 /**
  * Deletes a hangout from the database.
  *
- * @param  options - The options for deleting a hangout.
- * @param options.id - The ID of the hangout to delete.
+ * @param params - The params for deleting a hangout.
+ * @param params.id - The ID of the hangout to delete.
  * @returns A promise that resolves when the hangout is deleted.
  */
 export const deleteHangout = ({ id }: DeleteHangoutParams) => {
-  return deleteDocument({ path: collection, id });
+  return deleteDocument({ path: COLLECTION, id });
+};
+
+type SetRoundParams = {
+  id?: string;
+  data: Partial<Round>;
 };
 
 /**
  * Creates a new round for a hangout.
  *
- * @param  options - The options for creating a round.
- * @param options.data - The round data to create.
+ * @param  params - The params for creating a round.
+ * @param params.id - The ID of the round to create.
+ * @param params.data - The round data to create.
  * @returns A promise that resolves to the created round.
  */
-export const createRound = (data: Partial<Round>) => {
+export const setRound = ({ id, data }: SetRoundParams) => {
   const { hangoutId } = data;
-  const path = `${collection}/${hangoutId}/${roundsCollection}`;
 
-  return setDocument<Round>({ path, data });
+  const path = `${COLLECTION}/${hangoutId}/${ROUNDS_COLLECTION}`;
+
+  return setDocument<Round>({ path, id, data });
 };
 
 type GetRoundsParams = {
@@ -131,7 +141,7 @@ type GetRoundsParams = {
  * @returns  A snapshot with an array of rounds.
  */
 export const getRounds = ({ hangoutId }: GetRoundsParams) => {
-  const path = `${collection}/${hangoutId}/${roundsCollection}`;
+  const path = `${COLLECTION}/${hangoutId}/${ROUNDS_COLLECTION}`;
 
   return getDocuments<Round[]>({ path });
 };

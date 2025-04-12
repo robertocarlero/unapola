@@ -2,6 +2,19 @@ import { useEffect, useState } from 'react';
 
 /**
  * Hook to get the device size
+ * @returns An object with the device size
+ *
+ * @example
+ * const { isSmall, isMedium, isLarge, isExtraLarge } = useDeviceSize();
+ * console.log(isSmall, isMedium, isLarge, isExtraLarge);
+ *
+ * Response:
+ * {
+ *   isSmall: false,
+ *   isMedium: false,
+ *   isLarge: false,
+ *   isExtraLarge: false,
+ * }
  */
 export const useDeviceSize = () => {
   const [size, setSize] = useState<{

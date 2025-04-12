@@ -11,7 +11,7 @@ import { auth } from '@/lib/api';
 import { AUTH_ERRORS } from '@/lib/constants/errors';
 import { User } from '@/lib/types/users';
 
-type SignUpOptions = {
+type SignUpParams = {
   password: string;
   image?: File | null;
 } & Pick<User, 'email' | 'fullName' | 'username'>;
@@ -20,20 +20,21 @@ type SignUpOptions = {
  * Registers a new user with the provided email and password.
  * Also sets additional user data and uploads an optional image.
  *
- * @param {SignUpOptions} options - The options for signing up a user.
- * @param {string} options.email - The user's email.
- * @param {string} options.password - The user's password.
- * @param {File | null} options.image - The user's image.
- * @param {string} options.fullName - The user's full name.
- * @param {string} options.username - The user's username.
+ * @param  params - The params for signing up a user.
+ * @param  params.email - The user's email.
+ * @param  params.password - The user's password.
+ * @param  params.image - The user's image.
+ * @param  params.fullName - The user's full name.
+ * @param  params.username - The user's username.
  * @throws Will throw an error if the sign-up process fails.
+ * @returns A promise that resolves when the user is signed up.
  */
 export const signUp = async ({
   email,
   password,
   image,
   ...data
-}: SignUpOptions) => {
+}: SignUpParams) => {
   try {
     const { user } = await createUserWithEmailAndPassword(
       auth,
@@ -53,21 +54,21 @@ export const signUp = async ({
   }
 };
 
+type SignInParams = {
+  email: string;
+  password: string;
+};
+
 /**
  * Signs in a user using email and password.
  *
- * @param {Object} credentials - The user's credentials.
- * @param {string} credentials.email - The user's email.
- * @param {string} credentials.password - The user's password.
+ * @param  credentials - The user's credentials.
+ * @param  credentials.email - The user's email.
+ * @param  credentials.password - The user's password.
  * @throws Will throw an error if the sign-in process fails.
+ * @returns A promise that resolves when the user is signed in.
  */
-export const signIn = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
+export const signIn = async ({ email, password }: SignInParams) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
@@ -81,6 +82,7 @@ export const signIn = async ({
  * Logs out the current user.
  *
  * @throws Will throw an error if the logout process fails.
+ * @returns A promise that resolves when the user is logged out.
  */
 export const logout = async () => {
   try {
@@ -93,14 +95,19 @@ export const logout = async () => {
   }
 };
 
+type RecoveryPasswordParams = {
+  email: string;
+};
+
 /**
  * Sends a password reset email to the user.
  *
- * @param {Object} options - The options for sending a password reset email.
- * @param {string} options.email - The user's email.
+ * @param  params - The params for sending a password reset email.
+ * @param  params.email - The user's email.
  * @throws Will throw an error if the password reset email fails to send.
+ * @returns A promise that resolves when the password reset email is sent.
  */
-export const recoveryPassword = async ({ email }: { email: string }) => {
+export const recoveryPassword = async ({ email }: RecoveryPasswordParams) => {
   try {
     await sendPasswordResetEmail(auth, email);
   } catch (error) {

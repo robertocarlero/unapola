@@ -12,9 +12,9 @@ import {
   onSnapshot,
   deleteDoc,
 } from 'firebase/firestore';
-import * as cryptoServer from 'crypto';
 
 import { db } from '@/lib/api';
+import { getRandomUUID } from '@/lib/helpers/strings';
 
 import {
   DeleteDocumentOptions,
@@ -23,13 +23,6 @@ import {
   Snapshot,
   TransformDocumentResult,
 } from '@/lib/types/db';
-
-export function getRandomUUID() {
-  if (typeof window === 'undefined') {
-    return cryptoServer.randomBytes(16).toString('hex');
-  }
-  return crypto.randomUUID();
-}
 
 /**
  * Transforms a Firestore document snapshot into a typed object.
@@ -63,6 +56,18 @@ export function transformDocuments<T>(
  * @param  options.id - The id of the document.
  * @param  options.parseFn - A function to parse the document data.
  * @returns An object containing methods to get the document and listen for updates.
+ *
+ * @example
+ * const { data, loading } = useSnapshot({
+ *   fn: () => getDocument({ path: 'users', id: '123' }),
+ *   active: true,
+ * });
+ *
+ * getDocument({ path: 'users', id: '123' }).onSnapshot((doc) => {
+ *   console.log(doc);
+ * });
+ *
+ * await getDocument({ path: 'users', id: '123' }).get();
  */
 export const getDocument = <T>({
   path,
@@ -106,6 +111,18 @@ export const getDocument = <T>({
  * @param  options.parseFn - A function to parse the documents data.
  * @param  options.queries - The queries to apply to the collection.
  * @returns An object containing methods to get the documents and listen for updates.
+ *
+ * @example
+ * const { data, loading } = useSnapshot({
+ *   fn: () => getDocuments({ path: 'users', queries: [where('name', '==', 'John')] }),
+ *   active: true,
+ * });
+ *
+ * getDocuments({ path: 'users', queries: [where('name', '==', 'John')] }).onSnapshot((docs) => {
+ *   console.log(docs);
+ * });
+ *
+ * await getDocuments({ path: 'users', queries: [where('name', '==', 'John')] }).get();
  */
 export const getDocuments = <T>({
   path,
@@ -152,6 +169,9 @@ export const getDocuments = <T>({
  * @param  options.id - The id of the document.
  * @param  options.data - The data to set in the document.
  * @returns A promise that resolves to the document data with metadata.
+ *
+ * @example
+ * await setDocument({ path: 'users', id: '123', data: { name: 'John' } });
  */
 
 export const setDocument = async <T>({
@@ -188,6 +208,9 @@ export const setDocument = async <T>({
  * @param  options.path - The path to the document.
  * @param  options.id - The id of the document.
  * @returns A promise that resolves when the document is deleted.
+ *
+ * @example
+ * await deleteDocument({ path: 'users', id: '123' });
  */
 export const deleteDocument = async ({ path, id }: DeleteDocumentOptions) => {
   const q = doc(db, path, id);

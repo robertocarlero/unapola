@@ -8,6 +8,25 @@ type UseSnapshotOptions<T> = {
   active?: boolean;
 };
 
+/**
+ * Hook to get a snapshot of a Firestore document or collection.
+ * @param options - The options for the useSnapshot hook.
+ * @param options.initialData - The initial data to set when the hook is first mounted.
+ * @param options.fn - The function to call to get the snapshot.
+ * @param options.active - Whether the hook is active.
+ *
+ * @example
+ * const { data, loading } = useSnapshot({
+ *   fn: () => getDocument({ path: 'users', id: '123' }),
+ *   active: true,
+ * });
+ *
+ * Response:
+ * {
+ *   data: null,
+ *   loading: true,
+ * }
+ */
 export const useSnapshot = <T>({
   initialData,
   fn,

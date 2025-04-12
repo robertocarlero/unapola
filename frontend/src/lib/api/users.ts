@@ -8,7 +8,7 @@ import { uploadFile } from '@/lib/helpers/storage';
 import { COLLECTIONS } from '@/lib/constants/collections';
 import { User } from '@/lib/types/users';
 
-type GetUserOptions = {
+type GetUserParams = {
   id: string;
 };
 
@@ -17,15 +17,15 @@ const COLLECTION = COLLECTIONS.USERS;
 /**
  * Retrieves a user document from the database by user ID.
  *
- * @param  options - The options containing the user ID.
- * @param  options.id - The user ID.
+ * @param  params - The params containing the user ID.
+ * @param  params.id - The user ID.
  * @returns A promise that resolves to the user document.
  */
-export const getUser = ({ id }: GetUserOptions) => {
+export const getUser = ({ id }: GetUserParams) => {
   return getDocument<User>({ path: COLLECTION, id });
 };
 
-type SetUserOptions = {
+type SetUserParams = {
   id?: string;
   data: Partial<User>;
   image?: File | null;
@@ -35,13 +35,13 @@ type SetUserOptions = {
  * Sets or updates a user document in the database.
  * If an image is provided, it uploads the image and sets the avatar URL.
  *
- * @param  options - The options for setting the user data.
- * @param  options.id - The user ID. If not provided, a new ID is generated.
- * @param  options.data - The user data to set.
- * @param  options.image - An optional image file for the user's avatar.
+ * @param  params - The params for setting the user data.
+ * @param  params.id - The user ID. If not provided, a new ID is generated.
+ * @param  params.data - The user data to set.
+ * @param  params.image - An optional image file for the user's avatar.
  * @returns A promise that resolves when the user document is set.
  */
-export const setUser = async ({ id, data, image }: SetUserOptions) => {
+export const setUser = async ({ id, data, image }: SetUserParams) => {
   const body = { ...data };
   const userID = id ?? randomUUID();
 
@@ -56,20 +56,20 @@ export const setUser = async ({ id, data, image }: SetUserOptions) => {
   return setDocument<User>({ path: COLLECTION, id, data: body });
 };
 
-type GetUserByUsernameOptions = {
+type GetUserByUsernameParams = {
   username: string;
 };
 
 /**
  * Retrieves a user document from the database by username.
  *
- * @param  options - The options containing the username.
- * @param  options.username - The username to search for.
+ * @param  params - The params containing the username.
+ * @param  params.username - The username to search for.
  * @returns A promise that resolves to the user document or null if not found.
  */
 export const getUserByUsername = async ({
   username,
-}: GetUserByUsernameOptions): Promise<User | null> => {
+}: GetUserByUsernameParams): Promise<User | null> => {
   const ref = collection(db, COLLECTION);
   const q = query(ref, where('username', '==', username), limit(1));
 
@@ -78,17 +78,16 @@ export const getUserByUsername = async ({
   return transformDocument<User>(res.docs[0]);
 };
 
-type GetUserByIdOptions = {
+type GetUserByIdParams = {
   id: string;
 };
 
 /**
  * Retrieves a user document from the database by user ID.
  *
- * @param  options - The options containing the user ID.
- * @param  options.id - The user ID.
- * @returns A promise that resolves to the user document or null if not found.
+ * @param  params - The params containing the user ID.
+ * @param  params.id - The user ID.
  */
-export const getUserById = ({ id }: GetUserByIdOptions) => {
+export const getUserById = ({ id }: GetUserByIdParams) => {
   return getDocument<User>({ path: COLLECTION, id });
 };

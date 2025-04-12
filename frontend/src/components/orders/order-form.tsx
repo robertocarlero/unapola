@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
-import { createRound } from '@/lib/api/hangouts';
+import { setRound } from '@/lib/api/hangouts';
 
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -48,12 +48,12 @@ export function OrderForm({ hangout, isOpen, onClose }: OrderFormProps) {
       if (!hangout) {
         throw new Error('Hangout not found');
       }
-      const body: Partial<Round> = {
+      const data: Partial<Round> = {
         hangoutId: hangout?.id,
         userId: user?.uid,
         items: beers,
       };
-      await createRound(body);
+      await setRound({ data });
       toast.success('Ronda creada correctamente');
       onClose();
     } catch (error) {
