@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Unapola Frontend
 
-## Getting Started
+This is the frontend of the Unapola application, developed with Next.js and Firebase.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Firebase Authentication
+- Real-time database with Firestore
+- File storage with Firebase Storage
+- Modern and responsive interface with Tailwind CSS
+- TypeScript development for better maintainability
+
+## 📋 Prerequisites
+
+- Node.js (version 18 or higher)
+- pnpm (package manager)
+- Firebase project with Firestore, Storage and Authentication
+
+## 🔧 Setup
+
+### 1. Environment Variables
+
+Create a `.env` file in the project root with the following variable:
+
+```env
+NEXT_PUBLIC_FIREBASE_CONFIG={"apiKey":"your_api_key","authDomain":"your_auth_domain","projectId":"your_project_id","storageBucket":"your_storage_bucket","messagingSenderId":"your_messaging_sender_id","appId":"your_app_id"}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Where:
+- `apiKey`: Firebase API key
+- `authDomain`: Authentication domain (usually `[project-id].firebaseapp.com`)
+- `projectId`: Firebase project ID
+- `storageBucket`: Storage bucket (usually `[project-id].appspot.com`)
+- `messagingSenderId`: Messaging sender ID
+- `appId`: Firebase app ID
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Install Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm install
+```
 
-## Learn More
+### 3. Start Development Server
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application will be available at [https://unapola.vercel.app/](https://unapola.vercel.app/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Available Scripts
 
-## Deploy on Vercel
+- `pnpm dev` - Start development server
+- `pnpm build` - Build the application for production
+- `pnpm start` - Start the application in production mode
+- `pnpm lint` - Run the linter
+- `pnpm test` - Run tests
+- `pnpm test:watch` - Run tests in watch mode
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+frontend/
+├── src/
+│   ├── app/              # Next.js routes and pages
+│   │   ├── layout.tsx     # Global layout component
+│   │   ├── auth/          # Authentication routes
+│   │   ├── (globals)/     # Global routes
+│   │   └── page.tsx       # Main page
+│   ├── components/        # Reusable components
+│   │   ├── ui/            # Basic UI components
+│   │   └── *features/     # Feature-specific components
+│   ├── lib/              # Utilities and configurations
+│   │   ├── api/           # API utilities
+│   │   ├── hooks/         # Hook utilities
+│   │   ├── constants/     # Constant values
+│   │   ├── types/         # TypeScript type definitions
+│   │   └── helpers/       # Utility functions
+│   └── context/          # State management contexts
+└── ...                  # Configurations and dependencies
+```
+
+## 🔍 Development
+
+### Style Rules
+
+- Use TypeScript for all code
+- Follow React naming conventions
+- Keep components small and reusable
+- Use Tailwind CSS for styles
+- Document complex components
+
+### Testing
+
+The project uses Jest and React Testing Library for testing. Run:
+
+```bash
+pnpm test
+```
+
+## 📦 Deployment
+
+The application is configured to deploy on Vercel. Automatic deployment is enabled for the `main` branch.
+
+## 🤝 Contributing
+
+The project is [public on GitHub](https://github.com/robertocarlero/unapola).
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
