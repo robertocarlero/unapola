@@ -1,9 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { PlusIcon } from 'lucide-react';
 
+import { setHangout } from '@/lib/api/hangouts';
 import { useDeviceSize } from '@/lib/hooks/useDeviceSize';
 
+import { useAuth } from '@/context/AuthContext';
 import { useHangoutContext } from '@/context/HangoutContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { OrderForm } from '@/components/orders/order-form';
@@ -13,13 +16,25 @@ import { HangoutInfo } from '../hangout-info';
 import { HangoutDetailSkeleton } from './skeleton';
 import { HangoutFinish } from '../hangout-finish';
 import { HangoutsParticipantsList } from '../hangouts-participants-list';
-import { setHangout } from '@/lib/api/hangouts';
-import { toast } from 'sonner';
+import { HangoutForm } from '../hangout-form';
+import { HangoutDeleteButton } from '../hangout-delete-button';
+
+type HangoutDetailTabs = 'rounds' | 'participants' | 'settings';
 
 export function HangoutDetail() {
+  const { user } = useAuth();
   const { focusedHangout, hangout, loading } = useHangoutContext();
   const { isSmall } = useDeviceSize();
   const [formOpen, setFormOpen] = useState(false);
+  const [focusedTab, setFocusedTab] = useState<HangoutDetailTabs>('rounds');
+
+  const isCreator = useMemo(() => {
+    return user?.uid === hangout?.createdBy;
+  }, [user, hangout]);
+
+  useEffect(() => {
+    if (focusedHangout) setFocusedTab('rounds');
+  }, [focusedHangout]);
 
   const handleOnNewRoundClick = () => {
     setFormOpen(true);
@@ -48,6 +63,10 @@ export function HangoutDetail() {
     }
   };
 
+  const canEdit = useMemo(() => {
+    return !hangout?.paid && !hangout?.cancelled;
+  }, [hangout]);
+
   if (!focusedHangout) return null;
 
   if (loading) return <HangoutDetailSkeleton />;
@@ -58,11 +77,16 @@ export function HangoutDetail() {
         <HangoutInfo hangout={hangout} />
         <div className="flex items-start gap-2">
           <HangoutCancelButton data={hangout} isIconButton={isSmall} />
-          <HangoutFinish isIconButton={isSmall} />
+          {isCreator && <HangoutFinish data={hangout} isIconButton={isSmall} />}
         </div>
       </div>
 
-      <Tabs defaultValue="rounds" className="m-auto w-full max-w-3xl">
+      <Tabs
+        defaultValue="rounds"
+        value={focusedTab}
+        onValueChange={(value) => setFocusedTab(value as HangoutDetailTabs)}
+        className="m-auto w-full max-w-3xl"
+      >
         <TabsList className="m-auto mb-12">
           <TabsTrigger value="rounds">Rondas</TabsTrigger>
           <TabsTrigger value="participants">Participantes</TabsTrigger>
@@ -70,7 +94,7 @@ export function HangoutDetail() {
         </TabsList>
         <TabsContent value="rounds">
           <div className="flex w-full flex-col gap-4">
-            {!hangout?.paid && (
+            {canEdit && (
               <>
                 <div
                   className="hoover:shadow-md flex w-full cursor-pointer items-center justify-center gap-4 rounded-md border border-gray-200 bg-white p-4 hover:bg-gray-50"
@@ -97,12 +121,30 @@ export function HangoutDetail() {
             <HangoutsParticipantsList
               hangout={hangout}
               onAddParticipant={handleOnAddParticipant}
+              isReadOnly={!canEdit}
             />
           </div>
         </TabsContent>
         <TabsContent value="settings">
-          <div className="flex flex-col gap-4">
-            <p>Configuración</p>
+          <div className="flex w-full flex-col gap-4">
+            <h1 className="border-b pb-4 text-lg font-medium">
+              Zona de configuración
+            </h1>
+            <HangoutForm value={hangout} isReadOnly={!isCreator || !canEdit} />
+            {isCreator && (
+              <div className="mt-12 flex w-full flex-col gap-4">
+                <h1 className="w-full border-b pb-4 text-lg font-medium">
+                  Zona de pago y eliminación
+                </h1>
+                <div className="mt-4 flex gap-4">
+                  <HangoutFinish data={hangout} className="w-full shrink" />
+                  <HangoutDeleteButton
+                    className="w-full shrink"
+                    data={hangout}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </TabsContent>
       </Tabs>

@@ -83,7 +83,8 @@ export function ImageInput({
         className={cn(
           sizeClass,
           'cursor-pointer overflow-hidden rounded-full border border-dashed border-gray-300',
-          className
+          className,
+          props.disabled && 'cursor-not-allowed opacity-50'
         )}
       >
         <div className="h-full w-full overflow-hidden rounded-full">

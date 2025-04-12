@@ -7,8 +7,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useHangoutContext } from '@/context/HangoutContext';
 
 import { HangoutCard } from './hangout-card';
-import { HangoutForm } from './hangout-form';
 import { HangoutSkeleton } from './hangout-skeleton';
+import { HangoutDialog } from './hangout-dialog';
 
 export function HangoutsList() {
   const { user } = useAuth();
@@ -25,17 +25,19 @@ export function HangoutsList() {
   });
 
   useEffect(() => {
-    if (focusedHangout) return;
-    if (hangouts?.length) {
-      setFocusedHangout(hangouts[0]?.id);
-    }
+    if (focusedHangout && hangouts?.find(({ id }) => id === focusedHangout))
+      return;
+
+    if (!hangouts?.length) return;
+
+    setFocusedHangout(hangouts?.[0]?.id ?? '');
   }, [hangouts, focusedHangout, setFocusedHangout]);
 
   return (
     <div className="flex w-full flex-col">
       <div className="flex w-full justify-between px-4">
         <h2 className="text-xl font-bold">Juntadas para beber</h2>
-        {!!user?.uid && <HangoutForm creatorId={user?.uid} />}
+        {!!user?.uid && <HangoutDialog creatorId={user?.uid} />}
       </div>
       <div className="flex w-full gap-4 overflow-x-auto p-4">
         {isLoading

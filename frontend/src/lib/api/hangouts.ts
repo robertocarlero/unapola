@@ -1,6 +1,7 @@
 import { limit, orderBy, where } from 'firebase/firestore';
 
 import {
+  deleteDocument,
   getDocument,
   getDocuments,
   getRandomUUID,
@@ -25,11 +26,11 @@ type SetHangoutParams = {
  * Sets a hangout document in the database.
  * If an image is provided, it uploads the image and includes its reference in the document.
  *
- * @param {SetHangoutParams} params - The parameters for setting the hangout.
- * @param {string} [params.id] - Optional ID for the hangout. If not provided, a new UUID is generated.
- * @param {Partial<Hangout>} params.data - The data for the hangout.
- * @param {File | null} [params.image] - Optional image file to upload.
- * @returns {Promise<Partial<Hangout>>} A promise that resolves when the document is set.
+ * @param params - The parameters for setting the hangout.
+ * @param params.id - Optional ID for the hangout. If not provided, a new UUID is generated.
+ * @param params.data - The data for the hangout.
+ * @param params.image - Optional image file to upload.
+ * @returns A promise that resolves when the document is set.
  */
 export const setHangout = async ({ id, data, image }: SetHangoutParams) => {
   const body = { ...data };
@@ -59,9 +60,9 @@ type GetHangoutsParams = {
  * Retrieves hangouts from the database for a specific participant.
  * The results are ordered by date in descending order and limited to 20 entries.
  *
- * @param {GetHangoutsParams} params - The parameters for retrieving hangouts.
- * @param {string} [params.participantId] - The ID of the participant to filter hangouts by.
- * @returns {Snapshot<Hangout[]>} A promise that resolves with an array of hangouts.
+ * @param params - The parameters for retrieving hangouts.
+ * @param params.participantId - The ID of the participant to filter hangouts by.
+ * @returns A promise that resolves with an array of hangouts.
  */
 export const getHangouts = ({ participantId }: GetHangoutsParams) => {
   const queries = [
@@ -79,14 +80,29 @@ export const getHangouts = ({ participantId }: GetHangoutsParams) => {
 /**
  * Retrieves a hangout document from the database by its ID.
  *
- * @param {string} id - The ID of the hangout to retrieve.
- * @returns {Snapshot<Hangout>} A promise that resolves with the hangout document or null if it doesn't exist.
+ * @param id - The ID of the hangout to retrieve.
+ * @returns A promise that resolves with the hangout document or null if it doesn't exist.
  */
 export const getHangout = (id: string) => {
   return getDocument<Hangout>({
     path: collection,
     id,
   });
+};
+
+type DeleteHangoutParams = {
+  id: string;
+};
+
+/**
+ * Deletes a hangout from the database.
+ *
+ * @param  options - The options for deleting a hangout.
+ * @param options.id - The ID of the hangout to delete.
+ * @returns A promise that resolves when the hangout is deleted.
+ */
+export const deleteHangout = ({ id }: DeleteHangoutParams) => {
+  return deleteDocument({ path: collection, id });
 };
 
 /**

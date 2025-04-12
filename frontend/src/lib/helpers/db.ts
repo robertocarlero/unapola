@@ -10,12 +10,14 @@ import {
   setDoc,
   Timestamp,
   onSnapshot,
+  deleteDoc,
 } from 'firebase/firestore';
 import * as cryptoServer from 'crypto';
 
 import { db } from '@/lib/api';
 
 import {
+  DeleteDocumentOptions,
   GetDocumentOptions,
   SetDocumentOptions,
   Snapshot,
@@ -32,8 +34,8 @@ export function getRandomUUID() {
 /**
  * Transforms a Firestore document snapshot into a typed object.
  * @template T - The type of the transformed document.
- * @param {DocumentSnapshot<DocumentData>} doc - The document snapshot to transform.
- * @returns {TransformDocumentResult<T> | null} - The transformed document or null if it doesn't exist.
+ * @param doc - The document snapshot to transform.
+ * @returns The transformed document or null if it doesn't exist.
  */
 export function transformDocument<T>(
   doc: DocumentSnapshot<DocumentData>
@@ -44,8 +46,8 @@ export function transformDocument<T>(
 /**
  * Transforms an array of Firestore document snapshots into an array of typed objects.
  * @template T - The type of the transformed documents.
- * @param {DocumentSnapshot<DocumentData>[]} docs - The document snapshots to transform.
- * @returns {TransformDocumentResult<T>[]} - An array of transformed documents.
+ * @param docs - The document snapshots to transform.
+ * @returns An array of transformed documents.
  */
 export function transformDocuments<T>(
   docs: DocumentSnapshot<DocumentData>[]
@@ -56,11 +58,11 @@ export function transformDocuments<T>(
 /**
  * Retrieves a single document from Firestore and provides real-time updates.
  * @template T - The type of the document.
- * @param {GetDocumentOptions<T>} options - Options for retrieving the document.
- * @param {string} options.path - The path to the document.
- * @param {string} options.id - The id of the document.
- * @param {Function} options.parseFn - A function to parse the document data.
- * @returns {Snapshot<T>} - An object containing methods to get the document and listen for updates.
+ * @param  options - Options for retrieving the document.
+ * @param  options.path - The path to the document.
+ * @param  options.id - The id of the document.
+ * @param  options.parseFn - A function to parse the document data.
+ * @returns An object containing methods to get the document and listen for updates.
  */
 export const getDocument = <T>({
   path,
@@ -99,11 +101,11 @@ export const getDocument = <T>({
 /**
  * Retrieves multiple documents from a Firestore collection and provides real-time updates.
  * @template T - The type of the documents.
- * @param {GetDocumentOptions<T>} options - Options for retrieving the documents.
- * @param {string} options.path - The path to the collection.
- * @param {Function} options.parseFn - A function to parse the documents data.
- * @param {QueryConstraint[]} options.queries - The queries to apply to the collection.
- * @returns {Snapshot<T>} - An object containing methods to get the documents and listen for updates.
+ * @param  options - Options for retrieving the documents.
+ * @param  options.path - The path to the collection.
+ * @param  options.parseFn - A function to parse the documents data.
+ * @param  options.queries - The queries to apply to the collection.
+ * @returns An object containing methods to get the documents and listen for updates.
  */
 export const getDocuments = <T>({
   path,
@@ -145,11 +147,11 @@ export const getDocuments = <T>({
 /**
  * Sets a document in Firestore, creating or updating it as necessary.
  * @template T - The type of the document data.
- * @param {SetDocumentOptions<T>} options - Options for setting the document.
- * @param {string} options.path - The path to the document.
- * @param {string} options.id - The id of the document.
- * @param {DocumentData} options.data - The data to set in the document.
- * @returns {Promise<T & { id: string; createdAt?: Timestamp; updatedAt?: Timestamp }>} - A promise that resolves to the document data with metadata.
+ * @param  options - Options for setting the document.
+ * @param  options.path - The path to the document.
+ * @param  options.id - The id of the document.
+ * @param  options.data - The data to set in the document.
+ * @returns A promise that resolves to the document data with metadata.
  */
 
 export const setDocument = async <T>({
@@ -178,4 +180,16 @@ export const setDocument = async <T>({
     id: docID,
     ...(body as T),
   };
+};
+
+/**
+ * Deletes a document from Firestore.
+ * @param  options - Options for deleting the document.
+ * @param  options.path - The path to the document.
+ * @param  options.id - The id of the document.
+ * @returns A promise that resolves when the document is deleted.
+ */
+export const deleteDocument = async ({ path, id }: DeleteDocumentOptions) => {
+  const q = doc(db, path, id);
+  return await deleteDoc(q);
 };

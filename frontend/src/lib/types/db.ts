@@ -40,3 +40,8 @@ export type SetDocumentOptions<T> = {
   id?: string;
   data: Partial<T>;
 };
+
+export type DeleteDocumentOptions = {
+  path: string;
+  id: string;
+};

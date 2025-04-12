@@ -1,15 +1,23 @@
 import { useMemo, useState } from 'react';
 import { CircleCheckBigIcon, FileIcon } from 'lucide-react';
 
-import { useHangoutContext } from '@/context/HangoutContext';
 import { Button } from '@/components/ui/button';
-import { OrderInvoice } from '../orders/order-invoice';
+import { OrderInvoice } from '@/components/orders/order-invoice';
 
-export function HangoutFinish({ isIconButton }: { isIconButton: boolean }) {
+import { Hangout } from '@/lib/types/hangouts';
+
+export function HangoutFinish({
+  isIconButton,
+  className,
+  data,
+}: {
+  isIconButton?: boolean;
+  className?: string;
+  data: Hangout | null;
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { isOwn, hangout } = useHangoutContext();
 
-  const { cancelled, paid } = hangout || {};
+  const { cancelled, paid } = data || {};
 
   const handleOnFinishClick = () => {
     setDialogOpen(true);
@@ -25,7 +33,7 @@ export function HangoutFinish({ isIconButton }: { isIconButton: boolean }) {
     return CircleCheckBigIcon;
   }, [paid]);
 
-  if (!hangout || !isOwn || cancelled) return null;
+  if (!data || cancelled) return null;
 
   return (
     <>
@@ -33,13 +41,14 @@ export function HangoutFinish({ isIconButton }: { isIconButton: boolean }) {
         variant="outline"
         size={isIconButton ? 'icon' : 'default'}
         onClick={handleOnFinishClick}
+        className={className}
       >
         <Icon className="h-4 w-4" />
         {!isIconButton ? buttonText : ''}
       </Button>
       {dialogOpen && (
         <OrderInvoice
-          data={hangout}
+          data={data}
           isOpen={dialogOpen}
           onClose={() => setDialogOpen(false)}
         />
