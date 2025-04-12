@@ -20,13 +20,6 @@ export const normalizeString = (str: string) => {
 /**
  * Get a random Hexadecimal color from a string
  * @returns {string} The hexadecimal color.
- *
- * @example
- * const randomHexColor = getRandomHexColor();
- * console.log(randomHexColor);
- *
- * Response:
- * '#123456'
  */
 export const getRandomHexColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BREAKPOINTS } from '../constants/config';
 
 /**
  * Hook to get the device size
@@ -32,10 +33,14 @@ export const useDeviceSize = () => {
   useEffect(() => {
     const handleResize = () => {
       setSize({
-        isSmall: window.innerWidth < 768,
-        isMedium: window.innerWidth >= 768 && window.innerWidth < 1024,
-        isLarge: window.innerWidth >= 1024 && window.innerWidth < 1440,
-        isExtraLarge: window.innerWidth >= 1440,
+        isSmall: window.innerWidth < BREAKPOINTS.small,
+        isMedium:
+          window.innerWidth >= BREAKPOINTS.small &&
+          window.innerWidth < BREAKPOINTS.medium,
+        isLarge:
+          window.innerWidth >= BREAKPOINTS.medium &&
+          window.innerWidth < BREAKPOINTS.large,
+        isExtraLarge: window.innerWidth >= BREAKPOINTS.large,
       });
     };
 
