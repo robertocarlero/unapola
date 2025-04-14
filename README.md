@@ -7,6 +7,10 @@ Unapola is a modern web application developed with Next.js and Firebase. This ap
 - Repository: [https://github.com/robertocarlero/unapola](https://github.com/robertocarlero/unapola)
 - Demo: [https://unapola.vercel.app/](https://unapola.vercel.app/)
 
+## 🎥 Demo Video
+
+[Loom Video](https://www.loom.com/share/f86f6e5e72804e219720e27c0a47e532?sid=62e9e58e-ae0a-4ac4-94f5-145b3fb1d826)
+
 ## 📋 Prerequisites
 
 Before starting, make sure you have installed:
@@ -27,8 +31,6 @@ unapola/
 ## 🚀 Quick Start
 
 To get started with the project, follow these steps:
-
-1. Clone the repository:
 ```bash
 git clone https://github.com/robertocarlero/unapola.git
 cd unapola
